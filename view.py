@@ -1,62 +1,62 @@
 from tkinter import *
 from tkinter import ttk
+import constants
+import crontab
 
-def saveCron():
-    print("Saved Cron!")
-    pass
 
 class View:
 
-    def __init__(self, windowSize):
+    def __init__(self):
         
         # Create main app
         self.app = Tk()
         self.app.title("Cronjob Manager")
-        self.app.geometry(windowSize)
+        self.app.geometry(constants.app['windowSize'])
         self.app.resizable(False, False)
 
         # Read on/off photo
         try:
-            self.on = PhotoImage(file="on.png")
-            self.off = PhotoImage(file="off.png")
+            self._on = PhotoImage(file="on.png")
+            self._off = PhotoImage(file="off.png")
         except:
             print("Cannot open images!\n")
+            exit()
 
-        # Create Canvas
-        self.canvas = Canvas(self.app
-                    , bg="#EFF5F5"
+        # Create _canvas
+        self._canvas = Canvas(self.app
+                    , bg= constants.canvas['background']
                     , width=510
                     , height=500)
-        self.canvas.grid(column=0)
+        self._canvas.grid(column=0)
         
-        # Create Scrollbar
-        self.scrollbar = Scrollbar(self.app
+        # Create _scrollbar
+        self._scrollbar = Scrollbar(self.app
                     , orient='vertical'
-                    , command=self.canvas.yview)
-        self.scrollbar.grid(row=0,column=2,sticky=NS)
+                    , command=self._canvas.yview)
+        self._scrollbar.grid(row=0,column=2,sticky=NS)
  
-        # Bind Canvas with Scrollbar 
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-        self.canvas.bind('<Configure>'
-            , lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.frame = Frame(self.canvas)
-        self.canvas.create_window((0,0),window=self.frame,anchor="nw")
+        # Bind _canvas with _scrollbar 
+        self._canvas.configure(yscrollcommand=self._scrollbar.set)
+        self._canvas.bind('<Configure>'
+            , lambda e: self._canvas.configure(scrollregion=self._canvas.bbox("all")))
+        self._frame = Frame(self._canvas)
+        self._canvas.create_window((0,0),window=self._frame,anchor="nw")
 
         self.status = [] #Change later
 
     def _toggle(self, button, row):
 
         if self.status[row]:#Change later
-            button.config(image=self.off)
+            button.config(image=self._off)
             self.status[row] = False 
         else:
-            button.config(image=self.on)
+            button.config(image=self._on)
             self.status[row] = True #Change later
 
-    def createButton(self, instantNo, jobName, status):
+    def _createButton(self, instantNo, jobName, status):
         
         # Create label using cronjob command
-        cronJob = ttk.Label(self.frame
+        cronJob = ttk.Label(self._frame
                 , text=jobName
                 , width=45
                 , anchor="w"
@@ -68,18 +68,18 @@ class View:
                 , padx = 3, pady=3)
         
         cronJob.config(font=('Georgia', 10)
-                    ,foreground="#497174"
-                    ,background='#D6E4E5'
+                    ,foreground=constants.cronJob['fontcolor']
+                    ,background=constants.cronJob['background']
                     )
         
         # Set on/off button
-        img = self.off
+        img = self._off
         self.status.insert(instantNo, status) #Change later
         if (status):
-            img = self.on
+            img = self._on
 
         # Create button
-        button = ttk.Button(self.frame
+        button = ttk.Button(self._frame
                             , image=img
                             , width=50
                             , command=lambda: self._toggle(button, instantNo))
@@ -88,24 +88,29 @@ class View:
                     , ipadx=5, ipady=5
                     , padx=3 , pady=3
                     ,sticky='e')
-           
-    def runView(self, dummycron): #Change later
+          
+    def run(self, dummycron): #Change later
         
         for index, cronjob in enumerate(dummycron): 
             jobName = cronjob[0]
             status = cronjob[1]
-            self.createButton(index, jobName, status)
+            self._createButton(index, jobName, status)
 
         # Create save button    
         save = Button(self.app
                     , text ="Save"
-                    , width=10,height=2
-                    ,command=saveCron)
+                    , width=10
+                    ,command=crontab.saveCron)
         save.grid(row=1
                     , ipadx=3, ipady=3
-                    , padx=3 , pady=3)
+                    , padx=3 , pady=10)
         save.config(font=('Georgia', 10)
-                    ,foreground="#FFEFEF"
-                    ,background='#1A374D'
+                    ,foreground=constants.saveButton['fontcolor']
+                    ,background=constants.saveButton['background']
                     ,border=0
                     )
+
+def runView(dummycron):
+    view = View()
+    view.run(dummycron)
+    view.app.mainloop()
