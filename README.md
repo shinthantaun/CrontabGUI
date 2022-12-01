@@ -1,5 +1,5 @@
-# CrontabGUI
-### Python GUI to manage Linux Crontab 
+# GUI to Turn on/off Cronjobs
+### Python Tkinter GUI to manage Linux Crontab 
 To enable/disable cronjobs running on the linux server at my place of business, I made this simple GUI.
 
 You should be able to execute it by running the bash script CronjobManager.sh after setting a few directory 
