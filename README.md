@@ -25,3 +25,11 @@ Install the following before setting up.
 ## Execute
 - If you haven't set up any cronjobs, you may still run testing mode to test the user interface by changing the testing value in app.py.
 
+- Change directory to program path.
+    ```
+    cd <your path>/crontabGUI
+    ```
+- Run bash script.
+    ```
+    CronjobManager.sh
+    ```
