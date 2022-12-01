@@ -1,4 +1,5 @@
-imgpath = "/home/burneds/crontabGUI/img/"
+# Put your image file path here
+imgpath = "./img/"
 
 app = {
     "font" : ('Bold', 11),

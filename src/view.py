@@ -17,12 +17,12 @@ class View:
         self.app.title("Cronjob Manager")
         self.app.geometry(settings.app['windowSize'])
         # self.app.configure(background=settings.canvas['background'])
-        self.app.resizable(False, False)
+        # self.app.resizable(False, False)
         # Read on/off photo
         try:
             self._on = PhotoImage(file= settings.imgpath + "on.png")
             self._off = PhotoImage(file= settings.imgpath + "off.png")
-            self._logo = PhotoImage(file= settings.imgpath + "micron.png")
+            self._logo = PhotoImage(file= settings.imgpath + "logo.png")
         except:
             print("Error: Cannot open images!")
             self.app.destroy()
