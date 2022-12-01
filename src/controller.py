@@ -13,12 +13,11 @@ def runApp(testing=False)->None:
     """
     print("Opening app...\n")
     
-    cron = CronData(testing)
-    # try:
-    #     cron = CronData(testing)
-    # except:
-    #     print("Error: Unable to get user's crontab.")
-    #     exit()
+    try:
+        cron = CronData(testing)
+    except:
+        print("Error: Unable to get user's crontab.")
+        exit()
 
     if(cron.isEmpty()):
         print("Empty crontab!")

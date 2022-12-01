@@ -17,7 +17,7 @@ class View:
         self.app.title("Cronjob Manager")
         self.app.geometry(settings.app['windowSize'])
         # self.app.configure(background=settings.canvas['background'])
-        # self.app.resizable(False, False)
+        self.app.resizable(False, False)
         # Read on/off photo
         try:
             self._on = PhotoImage(file= settings.imgpath + "on.png")
