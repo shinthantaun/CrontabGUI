@@ -1,5 +1,4 @@
-from view import runView
-from crontab import dummy_cronjobs
+import controller
 
 if __name__ == '__main__':
-    runView(dummy_cronjobs)
+    controller.runApp()
