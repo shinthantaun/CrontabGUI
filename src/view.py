@@ -111,6 +111,7 @@ class View:
             self._createButton(instantNo, jobName)
             instantNo += 1
 
+
         # Create save button    
         save = Button(self.app
                     , text ="Save"
@@ -118,9 +119,23 @@ class View:
                     ,command=lambda :cron.save(self._jobs))
         save.grid(row=1
                     , ipadx=3, ipady=3
-                    , padx=3 , pady=10)
+                    , padx=250, pady=10, sticky='w')
         save.config(font=settings.app['font']
                     ,foreground=settings.saveButton['fontcolor']
                     ,background=settings.saveButton['background']
-                    ,border=0
-                    )
+                    ,border=2)
+
+
+
+        # Create close button    
+        create = Button(self.app
+                    , text ="Close"
+                    , width=10
+                    ,command=lambda : self.app.destroy())
+        create.grid(row=1
+                    , ipadx=3, ipady=3
+                    , padx=250, pady=10, sticky='e')
+        create.config(font=settings.app['font']
+                    ,foreground=settings.saveButton['fontcolor']
+                    ,background=settings.saveButton['background']
+                    ,border=2)
