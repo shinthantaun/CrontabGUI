@@ -1,0 +1,7 @@
+dummycron module
+================
+
+.. automodule:: dummycron
+   :members:
+   :undoc-members:
+   :show-inheritance:

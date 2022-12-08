@@ -1,0 +1,223 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>view &#8212; crontabGUI 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">crontabGUI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">view</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for view</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<div class="viewcode-block" id="View"><a class="viewcode-back" href="../view.html#view.View">[docs]</a><span class="k">class</span> <span class="nc">View</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Class that renders the GUI</span>
+<span class="sd">        </span>
+<span class="sd">        :raises Error:Cannot open images!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create main app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Cronjob Manager&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;windowSize&#39;</span><span class="p">])</span>
+        <span class="c1"># self.app.configure(background=settings.canvas[&#39;background&#39;])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Read on/off photo</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_on</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">imgpath</span> <span class="o">+</span> <span class="s2">&quot;on.png&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_off</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">imgpath</span> <span class="o">+</span> <span class="s2">&quot;off.png&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logo</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">imgpath</span> <span class="o">+</span> <span class="s2">&quot;logo.png&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Cannot open images!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">iconphoto</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_logo</span><span class="p">)</span>
+        <span class="c1"># Create _canvas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span>
+                    <span class="p">,</span> <span class="n">bg</span><span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">canvas</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span>
+                    <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">780</span>
+                    <span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Create _scrollbar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scrollbar</span> <span class="o">=</span> <span class="n">Scrollbar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span>
+                    <span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span>
+                    <span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">yview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scrollbar</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">sticky</span><span class="o">=</span><span class="n">NS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scrollbar</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">troughcolor</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scrollbar</span><span class="p">[</span><span class="s1">&#39;troughcolor&#39;</span><span class="p">])</span>
+        <span class="c1"># Bind _canvas with _scrollbar </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">yscrollcommand</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scrollbar</span><span class="o">.</span><span class="n">set</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Configure&gt;&#39;</span>
+            <span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">scrollregion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bbox</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_window</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span><span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;nw&quot;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_toggle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">:</span><span class="n">Button</span><span class="p">,</span> <span class="n">jobName</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Toggle button on/off.</span>
+<span class="sd">        </span>
+<span class="sd">        :param Button button: tkinter button</span>
+<span class="sd">        </span>
+<span class="sd">        :param str jobName: a particular cronjob name respective to the button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="n">jobName</span><span class="p">]:</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_off</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="n">jobName</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="n">jobName</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> 
+
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;[</span><span class="si">{0}</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jobName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="n">jobName</span><span class="p">])))</span>
+
+    <span class="k">def</span> <span class="nf">_createButton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instantNo</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">jobName</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create on/off button for a single cronjob.</span>
+<span class="sd">        </span>
+<span class="sd">        :param int instantNo: seq number of button created</span>
+<span class="sd">        </span>
+<span class="sd">        :param str jobName: a particular cronjob name respective to the button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create label using cronjob command</span>
+        <span class="n">cronJob</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span>
+                <span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">jobName</span>
+                <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">75</span>
+                <span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span>
+                <span class="p">,</span> <span class="n">borderwidth</span><span class="o">=</span><span class="mi">1</span>
+                <span class="p">,</span> <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">)</span>
+        <span class="n">cronJob</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">instantNo</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">10</span>
+                <span class="p">,</span> <span class="n">padx</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">cronJob</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;font&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">foreground</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">cronJob</span><span class="p">[</span><span class="s1">&#39;fontcolor&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">background</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">cronJob</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+        <span class="c1"># Set on/off button</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="n">jobName</span><span class="p">]):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on</span>
+        <span class="c1"># Create button</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span>
+                            <span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">img</span>
+                            <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span>
+                            <span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">jobName</span><span class="p">))</span>
+
+        <span class="n">button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">instantNo</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span>
+                    <span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">5</span>
+                    <span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span> <span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span>
+                    <span class="p">,</span><span class="n">sticky</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+          
+<div class="viewcode-block" id="View.run"><a class="viewcode-back" href="../view.html#view.View.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cron</span><span class="p">:</span><span class="nb">object</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Launch the GUI.</span>
+<span class="sd">        </span>
+<span class="sd">        :param object cron: CronData object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span> <span class="o">=</span> <span class="n">cron</span><span class="o">.</span><span class="n">getJobs</span><span class="p">()</span>
+        <span class="n">instantNo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">jobName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_createButton</span><span class="p">(</span><span class="n">instantNo</span><span class="p">,</span> <span class="n">jobName</span><span class="p">)</span>
+            <span class="n">instantNo</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Create save button    </span>
+        <span class="n">save</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span>
+                    <span class="p">,</span> <span class="n">text</span> <span class="o">=</span><span class="s2">&quot;Save&quot;</span>
+                    <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span>
+                    <span class="p">,</span><span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="p">:</span><span class="n">cron</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">))</span>
+        <span class="n">save</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span>
+                    <span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">3</span>
+                    <span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">save</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;font&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">foreground</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">saveButton</span><span class="p">[</span><span class="s1">&#39;fontcolor&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">background</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">saveButton</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Create close button    </span>
+        <span class="n">create</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span>
+                    <span class="p">,</span> <span class="n">text</span> <span class="o">=</span><span class="s2">&quot;Close&quot;</span>
+                    <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span>
+                    <span class="p">,</span><span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">destroy</span><span class="p">())</span>
+        <span class="n">create</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span>
+                    <span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">3</span>
+                    <span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+        <span class="n">create</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;font&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">foreground</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">saveButton</span><span class="p">[</span><span class="s1">&#39;fontcolor&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">background</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">saveButton</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span>
+                    <span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">crontabGUI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">view</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Shin Thant Aung.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>
