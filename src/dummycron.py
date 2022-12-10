@@ -1,3 +1,6 @@
+"""Dummy cronjobs to test UI in testing mode
+"""
+
 dummy_cronjobs = {
 'cron1 - script 0' : True,
 'cron2 - script 1': False,

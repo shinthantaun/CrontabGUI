@@ -5,11 +5,9 @@ import settings
 class View:
 
     def __init__(self)->object:
-        """
-        GUI View Class to turn on/off cronjobs
+        """Class that renders the GUI
         
-        Exceptions:
-            Raise Error: Cannot open images!
+        :raises Error:Cannot open images!
         """
         # Create main app
         self.app = Tk()
@@ -28,31 +26,55 @@ class View:
             self.app.destroy()
             exit()
         self.app.iconphoto(True,self._logo)
-        # Create _canvas
-        self._canvas = Canvas(self.app
-                    , bg= settings.canvas['background']
-                    , width=780
-                    , height=500)
-        self._canvas.grid(column=0)
-        # Create _scrollbar
-        self._scrollbar = Scrollbar(self.app
-                    , orient='vertical'
-                    , command=self._canvas.yview)
-        self._scrollbar.grid(row=0,column=2,sticky=NS)
-        self._scrollbar.configure(troughcolor=settings.scrollbar['troughcolor'])
-        # Bind _canvas with _scrollbar 
-        self._canvas.configure(yscrollcommand=self._scrollbar.set)
-        self._canvas.bind('<Configure>'
-            , lambda e: self._canvas.configure(scrollregion=self._canvas.bbox("all")))
-        self._frame = Frame(self._canvas)
-        self._canvas.create_window((0,0),window=self._frame,anchor="nw")
+
+    def createCanvas(self)->Canvas:
+        """Create canvas.
         
-    def _toggle(self, button:Button, jobName:str)->None:
+        :returns: return created tkinter Canvas
         """
-        Toggle button on/off.
-        Args:
-            button = tkinter Button 
-            jobName = cronjob name
+        canvas = Canvas(self.app
+                , bg= settings.canvas['background']
+                , width=780
+                , height=500)
+        canvas.grid(column=0)
+        return canvas
+
+    def createScrollbar(self,canvas:Canvas)->Scrollbar:
+        """Create scrollbar.
+        
+        :param Canvas canvas: tkinter canvas
+
+        :returns: return created tkinter Scrollbar
+        """
+        scrollbar = Scrollbar(self.app
+                    , orient='vertical'
+                    , command=canvas.yview)
+        scrollbar.grid(row=0,column=2,sticky=NS)
+        scrollbar.configure(troughcolor=settings.scrollbar['troughcolor'])
+        return scrollbar
+    
+    def createFrame(self,canvas:Canvas,scrollbar:Scrollbar)->Frame:
+        """Bind canvas and scrollbar on the frame.
+        
+        :param Canvas canvas: tkinter canvas
+        
+        :param Scrollbar scrollbar: tkinter scrollbar
+
+        :returns: return created tkinter Frame
+        """
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind('<Configure>'
+            , lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        frame = Frame(canvas)
+        canvas.create_window((0,0),window=frame,anchor="nw")
+        return frame
+
+    def toggle(self, button:Button, jobName:str)->None:
+        """Toggle button on/off.
+        
+        :param Button button: tkinter button
+        
+        :param str jobName: a particular cronjob name respective to the button
         """
         if self._jobs[jobName]:
             button.config(image=self._off)
@@ -63,15 +85,15 @@ class View:
 
         print(("[{0} : {1}]".format(jobName,self._jobs[jobName])))
 
-    def _createButton(self, instantNo:int, jobName:str)->None:
-        """
-        Create button to on/off each cronjob.
-        Args:
-            instantNo = seq number of button created
-            jobName = cronjob name
+    def createButton(self, instantNo:int, jobName:str, frame:Frame)->Button:
+        """Create on/off button for a single cronjob.
+        
+        :param int instantNo: seq number of button created
+        
+        :param str jobName: a particular cronjob name respective to the button
         """
         # Create label using cronjob command
-        cronJob = ttk.Label(self._frame
+        cronJob = ttk.Label(frame
                 , text=jobName
                 , width=75
                 , anchor="w"
@@ -89,28 +111,33 @@ class View:
         if (self._jobs[jobName]):
             img = self._on
         # Create button
-        button = ttk.Button(self._frame
+        button = ttk.Button(frame
                             , image=img
                             , width=50
-                            , command=lambda: self._toggle(button, jobName))
+                            , command=lambda: self.toggle(button, jobName))
 
         button.grid(row=instantNo, column=1
                     , ipadx=5, ipady=5
                     , padx=3 , pady=3
                     ,sticky='e')
+        return button
           
     def run(self, cron:object)->None:
-        """
-        Run the GUI view.
-        Args:
-            cron : CronData object
+        """Launch the GUI.
+        
+        :param object cron: CronData object
         """
         self._jobs = cron.getJobs()
+        canvas = self.createCanvas()
+        scrollbar = self.createScrollbar(canvas)
+        frame = self.createFrame(canvas,scrollbar)
+
+        # Create button for each job
         instantNo = 0
         for jobName in self._jobs: 
-            self._createButton(instantNo, jobName)
+            self.createButton(instantNo, jobName,frame)
             instantNo += 1
-
+        print("Created {0} buttons".format(instantNo))
 
         # Create save button    
         save = Button(self.app
@@ -124,8 +151,6 @@ class View:
                     ,foreground=settings.saveButton['fontcolor']
                     ,background=settings.saveButton['background']
                     ,border=2)
-
-
 
         # Create close button    
         create = Button(self.app

@@ -1,15 +1,16 @@
+"""Serves as the end point to run the GUI app.
+"""
+
 from view import View
 from crondata import CronData
 
-def runApp(testing=False)->None:
-    """
-    Run Crontab Manager GUI application
+
+def runApp(testing:bool=False)->None:
+    """this function serves as the end point to run the GUI app.
     
-    Args:
-        Testing = enable UI testing mode. Default is disable. 
-    
-    Exceptions:
-        Raise Error: Unable to get user's crontab.
+    :param testing: enable UI testing mode. Default is disable, defaults to False
+    :type testing: bool
+    :raises Error: Unable to get user's crontab.
     """
     print("Opening app...\n")
     
@@ -26,4 +27,4 @@ def runApp(testing=False)->None:
     view = View()
     view.run(cron)
     view.app.mainloop()
-    print("Closed app!\n")
+    print("\nClosed app!")

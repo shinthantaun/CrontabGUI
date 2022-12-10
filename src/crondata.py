@@ -5,11 +5,9 @@ from dummycron import dummy_cronjobs
 class CronData:
 
     def __init__(self,testing=False) -> object:
-        """
-        A class to get, save and refresh cronjobs.
+        """A class to get, save and refresh cronjobs.
 
-        Args:
-            Testing = enable UI testing mode. Default is disable. 
+        :param bool testing: enable UI testing mode. Default is disable , defaults to False
         """
         self._testing = testing
         self._user_cron = None
@@ -17,10 +15,11 @@ class CronData:
             self._user_cron = CronTab(user=os.getlogin())
         
     def isEmpty(self) -> bool:
-        """
-        Function to check whether there is an exisiting cronjob
-        Return:
-            Boolean
+        """Check whether there is no cronjob set up
+        
+        :returns: return True if there is no cronjob
+        
+        :rtype: bool
         """
         if(self._testing):
             return False
@@ -29,10 +28,11 @@ class CronData:
         return True
 
     def getJobs(self) -> dict:
-        """
-        Get cronjob
-        Return:
-            Dictionary object which contains job name(key) and it's status(value)
+        """Get both enabled and disabled cronjobs
+        
+        :returns: return dictionary which contains job name(key) and it's status(value)
+        
+        :rtype: dict
         """
         if(self._testing):
             return dummy_cronjobs
@@ -44,10 +44,9 @@ class CronData:
 
 
     def save(self,jobs:dict)->None:
-        """
-        Save the modified cronjobs. 
-        Args:
-            jobs = dictionary object which contains job name(key) and it's status(value)
+        """Save/override the jobs passed from param. 
+        
+        :param dict jobs: dictionary object which contains job name(key) and it's status(value)
         """
         if(self._testing):
             print("UI Testing Mode: Saved cron!")
