@@ -2,6 +2,12 @@ from tkinter import *
 from tkinter import ttk
 import settings
 
+WINDOW_DM = (700,500) # (width x height)
+CANVAS_WD = WINDOW_DM[0] * 0.9
+CANVAS_HT = WINDOW_DM[1] * 0.8
+FRAME_WD = CANVAS_WD * 0.8
+FRAME_HT = CANVAS_HT * 0.7
+
 class View:
 
     def __init__(self)->object:
@@ -13,8 +19,7 @@ class View:
         self.app = Tk()
         self._jobs = {}
         self.app.title("Cronjob Manager")
-        self.app.geometry(settings.app['windowSize'])
-        # self.app.configure(background=settings.canvas['background'])
+        self.app.geometry("{0}x{1}".format(WINDOW_DM[0],WINDOW_DM[1]))
         self.app.resizable(False, False)
         # Read on/off photo
         try:
@@ -34,8 +39,8 @@ class View:
         """
         canvas = Canvas(self.app
                 , bg= settings.canvas['background']
-                , width=780
-                , height=500)
+                , width=CANVAS_WD
+                , height=CANVAS_HT)
         canvas.grid(column=0)
         return canvas
 
@@ -65,7 +70,9 @@ class View:
         canvas.configure(yscrollcommand=scrollbar.set)
         canvas.bind('<Configure>'
             , lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        frame = Frame(canvas)
+        frame = Frame(canvas
+                , width=FRAME_WD
+                , height=FRAME_HT)
         canvas.create_window((0,0),window=frame,anchor="nw")
         return frame
 
@@ -95,14 +102,14 @@ class View:
         # Create label using cronjob command
         cronJob = ttk.Label(frame
                 , text=jobName
-                , width=75
                 , anchor="w"
                 , borderwidth=1
                 , relief="solid")
         cronJob.grid(row=instantNo, column=0
-                , ipadx=10, ipady=10
-                , padx = 3, pady=3)
-        cronJob.config(font=settings.app['font']
+                , ipadx=FRAME_WD * 0.006, ipady=FRAME_HT * 0.04
+                , padx = FRAME_WD * 0.06, pady=FRAME_HT * 0.02
+                , sticky = NSEW)
+        cronJob.config(font=('Bold', int(FRAME_WD * 0.025))
                     ,foreground=settings.cronJob['fontcolor']
                     ,background=settings.cronJob['background']
                     )
@@ -113,13 +120,12 @@ class View:
         # Create button
         button = ttk.Button(frame
                             , image=img
-                            , width=50
                             , command=lambda: self.toggle(button, jobName))
 
         button.grid(row=instantNo, column=1
-                    , ipadx=5, ipady=5
-                    , padx=3 , pady=3
-                    ,sticky='e')
+                    , ipadx=FRAME_WD * 0.003, ipady=FRAME_HT * 0.01
+                    , padx = FRAME_WD * 0.001, pady=FRAME_HT * 0.02
+                    ,sticky=NSEW)
         return button
           
     def run(self, cron:object)->None:
@@ -142,12 +148,11 @@ class View:
         # Create save button    
         save = Button(self.app
                     , text ="Save"
-                    , width=10
                     ,command=lambda :cron.save(self._jobs))
         save.grid(row=1
-                    , ipadx=3, ipady=3
-                    , padx=250, pady=10, sticky='w')
-        save.config(font=settings.app['font']
+                    , ipadx=CANVAS_WD * 0.003, ipady=CANVAS_HT * 0.003
+                    , padx=CANVAS_WD * 1/3, pady=CANVAS_HT * 0.07, sticky='w')
+        save.config(font=('Bold', int(FRAME_WD * 0.025))
                     ,foreground=settings.saveButton['fontcolor']
                     ,background=settings.saveButton['background']
                     ,border=2)
@@ -155,12 +160,11 @@ class View:
         # Create close button    
         create = Button(self.app
                     , text ="Close"
-                    , width=10
                     ,command=lambda : self.app.destroy())
         create.grid(row=1
-                    , ipadx=3, ipady=3
-                    , padx=250, pady=10, sticky='e')
-        create.config(font=settings.app['font']
+                    , ipadx=CANVAS_WD * 0.003, ipady=CANVAS_HT * 0.003
+                    , padx=CANVAS_WD * 1/3, pady=CANVAS_HT * 0.07, sticky='e')
+        create.config(font=('Bold', int(FRAME_WD * 0.025))
                     ,foreground=settings.saveButton['fontcolor']
                     ,background=settings.saveButton['background']
                     ,border=2)

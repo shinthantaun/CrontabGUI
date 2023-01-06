@@ -21,11 +21,6 @@ Font and background color of saveButton
 # Put your image file path here
 imgpath = "/home/burneds/crontabGUI/img/"
 
-app = {
-    "font" : ('Bold', 11),
-    "windowSize": "800x560"
-}
-
 canvas = {
     "background": "#393E46",
 }
